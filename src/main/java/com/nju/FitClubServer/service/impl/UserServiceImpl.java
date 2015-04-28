@@ -28,41 +28,34 @@ public class UserServiceImpl implements UserService {
 	private static UserDao userdao = new UserDaoImpl();
 
 	public Response login(String userName, User userlogin) {
-		// TODO Auto-generated method stub
 		try {
 			User user = userdao.searchUserByName(userName);
 			if (user == null)
-				return Response.ok(LoginResult.NO_SUCH_USER + "").build();
+				return Response.ok(LoginResult.NO_SUCH_USER).build();
 			if (!user.getPassword().equals(userlogin.getPassword()))
-				return Response.ok(LoginResult.USER_PASSWORD_NOT_MATCH + "")
-						.build();
+				return Response.ok(LoginResult.USER_PASSWORD_NOT_MATCH).build();
 			if (user.isLoginOrNot())
 				return Response.ok(LoginResult.Login_ALREADY).build();
 			userlogin.setLoginOrNot(true);
 			userdao.updateUser(userlogin);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return Response.ok(LoginResult.SUCCESS).build();
 	}
 
 	public Response register(User user) {
-		// TODO Auto-generated method stub
 		try {
 			if (userdao.searchUserByName(user.getUserName()) != null)
 				return Response.ok(RegisterResult.NAME_DULP).build();
 			userdao.addUser(user);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			// Response.ok().entity(RegisterResult.SQLERROR).build();
 			e.printStackTrace();
 		}
 		return Response.ok(RegisterResult.SUCCESS).build();
 	}
 
 	public void uploadImage(String username, ImageHelperModel imageHelper) {
-		// TODO Auto-generated method stub
 		OutputStream os = null;
 		String path = "/home/xxd/ibeyondy/server/" + username + ".png";
 		File pic = new File(path);
@@ -70,7 +63,6 @@ public class UserServiceImpl implements UserService {
 			try {
 				pic.createNewFile();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -88,8 +80,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	public ImageHelperModel downloadImage(String username,long position) {
-		// TODO Auto-generated method stub
+	public ImageHelperModel downloadImage(String username, long position) {
 		InputStream ins = null;
 		ImageHelperModel myfile = new ImageHelperModel();
 		String path = "/home/xxd/ibeyondy/server/" + username + ".png";
@@ -105,10 +96,8 @@ public class UserServiceImpl implements UserService {
 				myfile.setBytes(new byte[0]);
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			IOUtils.closeQuietly(ins);
@@ -117,17 +106,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public Response logout(String userName, User userLogout) {
-		// TODO Auto-generated method stub
 		try {
 			User user = userdao.searchUserByName(userName);
 			if (user == null)
-				return Response.ok(LogoutResult.NO_SUCH_USER + "").build();
+				return Response.ok(LogoutResult.NO_SUCH_USER).build();
 			if (!user.isLoginOrNot())
 				return Response.ok(LogoutResult.Logout_ALREADY).build();
 			user.setLoginOrNot(false);
 			userdao.updateUser(user);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return Response.ok(LogoutResult.SUCCESS).build();
