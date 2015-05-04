@@ -5,15 +5,33 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement(name = "EatFoodRecord")
 public class EatFoodRecord {
 
-	private Food food;
+	private String eatFoodRecordID;
+	private String eatRecordID;
+	private String foodID;
 	private double eatAmount;
 
-	public Food getFood() {
-		return food;
+	public String getEatFoodRecordID() {
+		return eatFoodRecordID;
 	}
 
-	public void setFood(Food food) {
-		this.food = food;
+	public void setEatFoodRecordID(String eatFoodRecordID) {
+		this.eatFoodRecordID = eatFoodRecordID;
+	}
+
+	public String getEatRecordID() {
+		return eatRecordID;
+	}
+
+	public void setEatRecordID(String eatRecordID) {
+		this.eatRecordID = eatRecordID;
+	}
+
+	public String getFoodID() {
+		return foodID;
+	}
+
+	public void setFoodID(String foodID) {
+		this.foodID = foodID;
 	}
 
 	public double getEatAmount() {

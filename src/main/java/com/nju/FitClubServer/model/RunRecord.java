@@ -1,5 +1,7 @@
 package com.nju.FitClubServer.model;
 
+import java.util.ArrayList;
+
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "RunRecord")
@@ -11,7 +13,7 @@ public class RunRecord {
 	private double runDistance;
 	private double runTime;
 	private double calorie;
-	private double[][] coordinate;
+	private ArrayList<CoordinateRecord> coordinateRecordList;
 
 	public String getRunRecordID() {
 		return runRecordID;
@@ -61,12 +63,12 @@ public class RunRecord {
 		this.calorie = calorie;
 	}
 
-	public double[][] getCoordinate() {
-		return coordinate;
+	public ArrayList<CoordinateRecord> getCoordinateRecordList() {
+		return coordinateRecordList;
 	}
 
-	public void setCoordinate(double[][] coordinate) {
-		this.coordinate = coordinate;
+	public void setCoordinateRecordList(
+			ArrayList<CoordinateRecord> coordinateRecordList) {
+		this.coordinateRecordList = coordinateRecordList;
 	}
-
 }

@@ -10,5 +10,5 @@ public interface UserDao {
 	public boolean deleteUser(String userID) throws SQLException;
 	public boolean updateUser(User userUpdate) throws SQLException;
 	public User searchUserByName(String userName) throws SQLException;
-	
+	public User searchUserByID(String userID) throws SQLException;
 }

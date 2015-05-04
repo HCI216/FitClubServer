@@ -9,6 +9,7 @@ public class Plan {
 	private String toUserID;
 	private String startTime;
 	private String endTime;
+	private String state;
 
 	public String getPlanID() {
 		return planID;
@@ -50,4 +51,11 @@ public class Plan {
 		this.endTime = endTime;
 	}
 
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
 }

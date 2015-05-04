@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "Food")
 public class Food {
-
 	private String foodID;
 	private String foodName;
 	private String foodAmount;
@@ -12,6 +11,24 @@ public class Food {
 	private double fat;
 	private double carbobydrate;
 	private double protein;
+	private String smallCategory;
+	private String bigCategory;
+
+	public String getSmallCategory() {
+		return smallCategory;
+	}
+
+	public void setSmallCategory(String smallCategory) {
+		this.smallCategory = smallCategory;
+	}
+
+	public String getBigCategory() {
+		return bigCategory;
+	}
+
+	public void setBigCategory(String bigCategory) {
+		this.bigCategory = bigCategory;
+	}
 
 	public String getFoodID() {
 		return foodID;
@@ -68,5 +85,4 @@ public class Food {
 	public void setProtein(double protein) {
 		this.protein = protein;
 	}
-
 }
