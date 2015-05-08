@@ -1,17 +1,35 @@
 package com.nju.FitClubServer.dao.impl;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.util.Progressable;
+import org.apache.hadoop.util.ReflectionUtils;
+import org.apache.hadoop.io.IOUtils;
+
+
 import com.nju.FitClubServer.dao.WeightChangeRecordDao;
+import com.nju.FitClubServer.model.User;
 import com.nju.FitClubServer.model.WeightChangeRecord;
 
 public class WeightChangeRecordDaoImpl implements WeightChangeRecordDao {
 
-	String url = "jdbc:mysql://localhost:3306/fitclub";
+	private static Configuration conf = new Configuration();
+	String url = "jdbc:mysql://localhost:3306/fitclub/data";
 
 	public Connection getCon() {
 		Connection con = null;
@@ -25,9 +43,34 @@ public class WeightChangeRecordDaoImpl implements WeightChangeRecordDao {
 		return con;
 	}
 
-	public boolean addWeightChangeRecordDao(
+	
+//	public static void main(String[] args) throws Exception{
+//		WeightChangeRecordDao dao = new WeightChangeRecordDaoImpl();
+//		User user = new User();
+//		user.setUserID("201504301427");
+//		user.setBirthDay("19940511");
+//		user.setHeight(173);
+//		WeightChangeRecord weightChangeRecord = new WeightChangeRecord();
+//		weightChangeRecord.setStartTime("20150505");
+//		weightChangeRecord.setEndTime("20150510");
+//		weightChangeRecord.setStartWeight(180);
+//		weightChangeRecord.setEndWeight(160);
+//		weightChangeRecord.setUserID("201504301427");
+//		weightChangeRecord.setWeightChangeRecordRecordID("01");
+//		dao.addWeightChangeRecordDao(user, weightChangeRecord);
+//	}
+	
+	public boolean addWeightChangeRecordDao(User user,
 			WeightChangeRecord weightChangeRecord) throws Exception {
 		// TODO Auto-generated method stub
+
+		String filePath = "/home/xxd/ibeyondy/hadoop-2.6.0/fitclub/data.txt";
+		String remotePath = "hdfs://localhost:9000/fitclub/data/data.txt";
+		
+		writeToFile(weightChangeRecord, user ,filePath);
+		deleteData(remotePath);
+		copyFromLocal(remotePath,filePath);
+		
 		Connection con = getCon();
 		if (con == null)
 			return false;
@@ -42,6 +85,53 @@ public class WeightChangeRecordDaoImpl implements WeightChangeRecordDao {
 		stmt.execute();
 		return true;
 	}
+
+	private void writeToFile(WeightChangeRecord weightChangeRecord, User user,String filePath)
+			throws Exception {
+		String userID = user.getUserID();
+		double changeWeight = weightChangeRecord.getEndWeight()
+				- weightChangeRecord.getStartWeight();
+		File file = new File(filePath);
+		FileWriter fw = new FileWriter(file, true);
+
+		String str = weightChangeRecord.getWeightChangeRecordRecordID()
+				+ " "
+				+ user.getAge()
+				+ " "
+				+ user.getHeight()
+				+ " "
+				+ weightChangeRecord.getStartWeight()
+				+ " "
+				+ weightChangeRecord.duringTime()
+				+ " "
+				+ (0 - changeWeight);
+
+		fw.write(str + "\n");
+		fw.flush();
+	}
+	
+	public static void deleteData(String path) throws Exception {
+		FileSystem fs = FileSystem.get(URI.create(path), conf);
+		if (fs.exists(new Path(path))) {
+			fs.delete(new Path(path));
+		}
+	}
+	
+	public static void copyFromLocal(String remoteData,String localPath) throws Exception {
+		InputStream in = new BufferedInputStream(new FileInputStream(new File(
+				localPath)));
+		FileSystem fs = FileSystem.get(URI.create(remoteData), conf);
+		OutputStream out = fs.create(new Path(remoteData), new Progressable() {
+
+			public void progress() {
+				// TODO Auto-generated method stub
+				System.out.println("*");
+			}
+
+		});
+		IOUtils.copyBytes(in, out, 4096, true);
+	}
+	
 
 	public ArrayList<WeightChangeRecord> getAllWeightChangeRecord()
 			throws Exception {

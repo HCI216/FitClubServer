@@ -6,6 +6,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 
 import com.nju.FitClubServer.model.Plan;
 
@@ -16,11 +17,11 @@ public interface PlanService {
 	@POST
 	@Path("/askForPlan/{userID}")
 	@Consumes("application/xml")
-	public Plan askForPlan(@PathParam("userID") String userID);
+	public Response askForPlan(@PathParam("userID") String userID);
 
 	@GET
 	@Path("/getPlan/{userID}")
 	@Consumes("application/xml")
-	public Plan getPlan(String userID);
+	public Plan getPlan(@PathParam("userID")String userID);
 
 }

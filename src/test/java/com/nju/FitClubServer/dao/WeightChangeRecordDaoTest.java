@@ -17,7 +17,7 @@ public class WeightChangeRecordDaoTest {
 		weightChangeRecord.setStartWeight(90.1);
 		weightChangeRecord.setEndWeight(80.2);
 		weightChangeRecord.setUserID("001");
-		dao.addWeightChangeRecordDao(weightChangeRecord);
+//		dao.addWeightChangeRecordDao(weightChangeRecord);
 	}
 
 	public void getAllWeightChangeRecord() throws Exception {

@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import com.nju.FitClubServer.model.ImageHelperModel;
 import com.nju.FitClubServer.model.User;
 import com.nju.FitClubServer.model.WeightRecord;
+import com.nju.FitClubServer.model.WeightRecordList;
 
 @Path("/userservice")
 @Produces("application/xml")
@@ -49,15 +50,15 @@ public interface UserService {
 			@PathParam("username") String username,
 			@PathParam("position") long position);
 
-	@PUT
+	@POST
 	@Path("/recordWeight/{userID}/{newWeight}")
 	@Consumes("application/xml")
-	public boolean recordWeight(@PathParam("userID") String userID,
+	public Response recordWeight(@PathParam("userID") String userID,
 			@PathParam("newWeight") double newWeight);
 
 	@GET
 	@Path("/getAllWeightRecord/{userID}")
 	@Consumes("application/xml")
-	public ArrayList<WeightRecord> getAllWeightRecord(@PathParam("userID") String userID);
+	public WeightRecordList getAllWeightRecord(@PathParam("userID") String userID);
 
 }

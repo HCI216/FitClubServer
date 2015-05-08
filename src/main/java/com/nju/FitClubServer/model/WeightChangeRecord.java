@@ -60,4 +60,16 @@ public class WeightChangeRecord {
 		this.endWeight = endWeight;
 	}
 
+	public int duringTime() {
+		char[] st = this.startTime.toCharArray();
+		char[] et = this.endTime.toCharArray();
+		int sYear = Integer.parseInt("" + st[0] + st[1] + st[2] + st[3]);
+		int eYear = Integer.parseInt("" + et[0] + st[1] + st[2] + st[3]);
+		int sMonth = Integer.parseInt("" + st[4] + st[5]);
+		int eMonth = Integer.parseInt("" + et[4] + et[5]);
+		int sDay = Integer.parseInt("" + st[6] + st[7]);
+		int eDay = Integer.parseInt("" + et[6] + et[7]);
+		return (eYear - sYear) * 365 + (eMonth - sMonth) * 30 + (eDay - sDay);
+	}
+
 }

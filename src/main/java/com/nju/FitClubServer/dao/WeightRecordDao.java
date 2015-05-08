@@ -13,5 +13,7 @@ public interface WeightRecordDao {
 
 	public ArrayList<WeightRecord> getWeightRecordByUserID(String userID)
 			throws Exception;
-
+	
+	public Double getWeightByUserID(String userID) throws Exception;
+	
 }

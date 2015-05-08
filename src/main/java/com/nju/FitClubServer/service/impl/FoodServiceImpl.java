@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import com.nju.FitClubServer.dao.FoodDao;
 import com.nju.FitClubServer.dao.impl.FoodDaoImpl;
 import com.nju.FitClubServer.model.Food;
+import com.nju.FitClubServer.model.FoodCategoryList;
+import com.nju.FitClubServer.model.FoodList;
 import com.nju.FitClubServer.service.FoodService;
 
 public class FoodServiceImpl implements FoodService {
 
 	private FoodDao dao = new FoodDaoImpl();
 
-	public ArrayList<String> getSmallCategoryByBigCategory(String bigCategory) {
+	public FoodCategoryList getSmallCategoryByBigCategory(String bigCategory) {
+		FoodCategoryList foodCategoryList = new FoodCategoryList();
 		ArrayList<String> list = new ArrayList<String>();
 		try {
 			if (!bigCategory.equals("traditional"))
@@ -27,7 +30,8 @@ public class FoodServiceImpl implements FoodService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return list;
+		foodCategoryList.setCategoryList(list);
+		return foodCategoryList;
 	}
 
 	private String getFirstStr(String input) {
@@ -54,8 +58,9 @@ public class FoodServiceImpl implements FoodService {
 		return result;
 	}
 
-	public ArrayList<String> getTraditionalCategoryFromSmallCategory(
+	public FoodCategoryList getTraditionalCategoryFromSmallCategory(
 			String smallCategory) {
+		FoodCategoryList foodCategoryList = new FoodCategoryList();
 		ArrayList<String> list = new ArrayList<String>();
 		try {
 			ArrayList<String> tmp = dao
@@ -71,12 +76,15 @@ public class FoodServiceImpl implements FoodService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return list;
+		foodCategoryList.setCategoryList(list);
+		return foodCategoryList;
 	}
 
-	public ArrayList<Food> getFoodByBigCategoryAndSmallCategory(
-			String bigCategory, String smallCategory) {
+	public FoodList getFoodByBigCategoryAndSmallCategory(String bigCategory,
+			String smallCategory) {
 		// TODO Auto-generated method stub
+
+		FoodList foods = new FoodList();
 
 		ArrayList<Food> foodList = new ArrayList<Food>();
 		try {
@@ -85,12 +93,14 @@ public class FoodServiceImpl implements FoodService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return foodList;
+		foods.setFoods(foodList);
+		return foods;
 	}
 
-	public ArrayList<Food> getTraditionalFoodBySmallCategory(
+	public FoodList getTraditionalFoodBySmallCategory(
 			String smallCategory_part1, String smallCategory_part2) {
 		// TODO Auto-generated method stub
+		FoodList foods = new FoodList();
 		ArrayList<Food> foodList = new ArrayList<Food>();
 		try {
 			foodList = dao.getFoodBySmallCategoryAndBigCategory(
@@ -99,19 +109,21 @@ public class FoodServiceImpl implements FoodService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return foodList;
+		foods.setFoods(foodList);
+		return foods;
 	}
 
-	public ArrayList<Food> searchFoodByContent(String content) {
+	public FoodList searchFoodByContent(String content) {
 		// TODO Auto-generated method stub
+		FoodList foods = new FoodList();
 		ArrayList<Food> foodList = new ArrayList<Food>();
 		try {
 			foodList = dao.getFoodByName(content);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		return foodList;
+		foods.setFoods(foodList);
+		return foods;
 
 	}
 

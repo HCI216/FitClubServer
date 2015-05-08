@@ -29,6 +29,7 @@ import com.nju.FitClubServer.model.ImageHelperModel;
 import com.nju.FitClubServer.model.User;
 import com.nju.FitClubServer.model.WeightChangeRecord;
 import com.nju.FitClubServer.model.WeightRecord;
+import com.nju.FitClubServer.model.WeightRecordList;
 import com.nju.FitClubServer.service.UserService;
 
 public class UserServiceImpl implements UserService {
@@ -137,11 +138,11 @@ public class UserServiceImpl implements UserService {
 		return Response.ok(LogoutResult.SUCCESS).build();
 	}
 
-	public boolean recordWeight(String userID, double newWeight) {
+	public Response recordWeight(String userID, double newWeight) {
 		// TODO Auto-generated method stub
 
 		try {
-
+			
 			ArrayList<WeightRecord> records = weightRecordDao
 					.getWeightRecordByUserID(userID);
 
@@ -159,7 +160,8 @@ public class UserServiceImpl implements UserService {
 					newID = getNewID();
 				}
 				weightChangeRecord.setWeightChangeRecordRecordID(newID);
-				weightChangeRecordDao.addWeightChangeRecordDao(weightChangeRecord);
+				User user = userdao.searchUserByID(userID);
+				weightChangeRecordDao.addWeightChangeRecordDao(user,weightChangeRecord);
 			}
 
 			WeightRecord record = new WeightRecord();
@@ -177,37 +179,45 @@ public class UserServiceImpl implements UserService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return true;
+		return Response.ok().build();
 	}
 
 	private String getNewID() {
 		Calendar cal = Calendar.getInstance();
-		String year = cal.get(Calendar.YEAR) + "";
-		String month = cal.get(Calendar.MONTH) + "";
-		String day = cal.get(Calendar.DAY_OF_MONTH) + "";
-		String hour = cal.get(Calendar.HOUR_OF_DAY) + "";
-		String minutes = cal.get(Calendar.MINUTE) + "";
-		String sec = cal.get(Calendar.SECOND) + "";
-		return year + month + day + hour + minutes + sec;
+		String sYear = cal.get(Calendar.YEAR) + "";
+		String sMonth = getNewStr(cal.get(Calendar.MONTH) + 1);
+		String sDay = getNewStr(cal.get(Calendar.DAY_OF_MONTH));
+		String hour = getNewStr(cal.get(Calendar.HOUR_OF_DAY));
+		String minutes = getNewStr(cal.get(Calendar.MINUTE));
+		String sec = getNewStr(cal.get(Calendar.SECOND));
+		return sYear + sMonth + sDay + hour + minutes + sec;
+	}
+
+	public String getNewStr(int i) {
+		if (i < 10)
+			return "0" + i;
+		return "" + i;
 	}
 
 	private String getTime() {
 		Calendar cal = Calendar.getInstance();
-		String year = cal.get(Calendar.YEAR) + "";
-		String month = cal.get(Calendar.MONTH) + "";
-		String day = cal.get(Calendar.DAY_OF_MONTH) + "";
-		return year + month + day;
+		String sYear = cal.get(Calendar.YEAR) + "";
+		String sMonth = getNewStr(cal.get(Calendar.MONTH) + 1);
+		String sDay = getNewStr(cal.get(Calendar.DAY_OF_MONTH));
+		return sYear + sMonth + sDay;
 	}
 
-	public ArrayList<WeightRecord> getAllWeightRecord(String userID) {
+	public WeightRecordList getAllWeightRecord(String userID) {
 		// TODO Auto-generated method stub
+		WeightRecordList list = new WeightRecordList();
 		ArrayList<WeightRecord> recordList = new ArrayList<WeightRecord>();
 		try {
 			recordList = weightRecordDao.getWeightRecordByUserID(userID);
+			list.setRecords(recordList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return recordList;
+		return list;
 	}
 
 }

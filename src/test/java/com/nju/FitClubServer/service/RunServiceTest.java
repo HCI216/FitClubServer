@@ -42,8 +42,8 @@ public class RunServiceTest {
 	}
 
 	public void getRunRecordByUserIDAndTime() throws Exception {
-		ArrayList<RunRecord> runRecordList = service.getRunRecord("001",
-				"20150908");
+		ArrayList<RunRecord> runRecordList = service.getRunRecord("201504301427",
+				"20150504").getRecords();
 
 		for (int i = 0; i < runRecordList.size(); i++) {
 			ArrayList<CoordinateRecord> records = runRecordList.get(i)

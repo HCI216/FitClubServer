@@ -10,6 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import com.nju.FitClubServer.model.EatRecord;
+import com.nju.FitClubServer.model.EatRecordList;
 
 @Path("/eatservice")
 @Produces("application/xml")
@@ -22,6 +23,6 @@ public interface EatService {
 	
 	@GET
 	@Path("/getEatRecord/{userID}/{time}")
-	public ArrayList<EatRecord> getEatRecord(@PathParam("userID")String userID,@PathParam("time")String time);
+	public EatRecordList getEatRecord(@PathParam("userID")String userID,@PathParam("time")String time);
 	
 }

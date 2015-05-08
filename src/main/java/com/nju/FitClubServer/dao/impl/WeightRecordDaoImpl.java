@@ -84,4 +84,20 @@ public class WeightRecordDaoImpl implements WeightRecordDao {
 		return null;
 	}
 
+	public Double getWeightByUserID(String userID) throws Exception {
+		// TODO Auto-generated method stub
+		double reult = 0;
+		Connection con = getCon();
+		if (con == null)
+			return null;
+		ArrayList<WeightRecord> weightRecordList = new ArrayList<WeightRecord>();
+		String query = "select * from weightRecord where userID=? order by weightRecordID desc";
+		PreparedStatement stmt = con.prepareStatement(query);
+		stmt.setString(1, userID);
+		ResultSet set = stmt.executeQuery();
+		while (set.next())
+			return set.getDouble("weight");
+		return 0.0;
+	}
+
 }

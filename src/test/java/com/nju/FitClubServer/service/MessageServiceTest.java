@@ -35,7 +35,7 @@ public class MessageServiceTest {
 	}
 
 	public void getGetRunMateRecord() {
-		ArrayList<GetRunMateRecord> records = service.getGetRunMateRecord();
+		ArrayList<GetRunMateRecord> records = service.getGetRunMateRecord().getGetRunMateRecordList();
 
 		for (int i = 0; i < records.size(); i++) {
 			System.out.println(records.get(i).getTime() + ","
@@ -46,7 +46,7 @@ public class MessageServiceTest {
 	}
 
 	public void getReceiveMessage() {
-		ArrayList<InviteMessage> message = service.getReceiveMessage("001");
+		ArrayList<InviteMessage> message = service.getReceiveMessage("001").getInviteMessageList();
 		for (int i = 0; i < message.size(); i++) {
 			System.out.println(message.get(i).getTelephone() + ","
 					+ message.get(i).getUserID() + " , "
@@ -55,7 +55,7 @@ public class MessageServiceTest {
 	}
 
 	public void getSendMessage() {
-		ArrayList<InviteMessage> message = service.getSendMessage("001");
+		ArrayList<InviteMessage> message = service.getSendMessage("001").getInviteMessageList();
 		for (int i = 0; i < message.size(); i++) {
 			System.out.println(message.get(i).getTelephone() + ","
 					+ message.get(i).getUserID() + " , "

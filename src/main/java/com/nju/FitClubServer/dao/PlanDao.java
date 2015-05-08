@@ -14,4 +14,6 @@ public interface PlanDao {
 
 	public ArrayList<Plan> getPlanByUserID(String userID) throws Exception;
 
+	public Plan getPlanByID(String planID) throws Exception;
+	
 }

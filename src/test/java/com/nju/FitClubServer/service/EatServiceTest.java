@@ -39,7 +39,7 @@ public class EatServiceTest {
 
 	public void testGetEatRecord() {
 		ArrayList<EatRecord> eatRecordsList = service.getEatRecord("001",
-				"20150908");
+				"20150908").getEatRecordList();
 		for (int i = 0; i < eatRecordsList.size(); i++) {
 			ArrayList<EatFoodRecord> foodList = eatRecordsList.get(i)
 					.getFoodList();

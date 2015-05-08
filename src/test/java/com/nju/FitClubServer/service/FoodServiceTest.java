@@ -13,7 +13,7 @@ public class FoodServiceTest {
 
 	public void getSmallCategoryByBigCategory() {
 		ArrayList<String> strList = service
-				.getSmallCategoryByBigCategory("brand");
+				.getSmallCategoryByBigCategory("brand").getCategoryList();
 
 		for (int i = 0; i < strList.size(); i++) {
 			System.out.println(strList.get(i));
@@ -23,7 +23,7 @@ public class FoodServiceTest {
 
 	public void getTraditionalCategoryFromSmallCategory() {
 		ArrayList<String> strList = service
-				.getTraditionalCategoryFromSmallCategory("小吃类");
+				.getTraditionalCategoryFromSmallCategory("小吃类").getCategoryList();
 		for (int i = 0; i < strList.size(); i++) {
 			System.out.println(strList.get(i));
 		}
@@ -31,7 +31,7 @@ public class FoodServiceTest {
 
 	public void getFoodByBigCategoryAndSmallCategory() {
 		ArrayList<Food> foodList = service
-				.getFoodByBigCategoryAndSmallCategory("brand", "达利园");
+				.getFoodByBigCategoryAndSmallCategory("brand", "达利园").getFoods();
 
 		for (int i = 0; i < foodList.size(); i++) {
 			Food food = foodList.get(i);
@@ -43,7 +43,7 @@ public class FoodServiceTest {
 	}
 
 	public void getTraditionalFoodBySmallCategory() {
-		ArrayList<Food> foodList = service.getTraditionalFoodBySmallCategory("蛋类", "蛋黄");
+		ArrayList<Food> foodList = service.getTraditionalFoodBySmallCategory("蛋类", "蛋黄").getFoods();
 		for (int i = 0; i < foodList.size(); i++) {
 			Food food = foodList.get(i);
 			System.out.print(food.getFoodName() + " : ");
@@ -53,7 +53,7 @@ public class FoodServiceTest {
 	}
 	
 	public  void searchFoodByContent(){
-		ArrayList<Food> foodList = service.searchFoodByContent("鸡蛋");
+		ArrayList<Food> foodList = service.searchFoodByContent("鸡蛋").getFoods();
 		for (int i = 0; i < foodList.size(); i++) {
 			Food food = foodList.get(i);
 			System.out.print(food.getFoodName() + " : ");

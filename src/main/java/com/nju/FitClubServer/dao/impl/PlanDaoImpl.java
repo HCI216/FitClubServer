@@ -90,4 +90,25 @@ public class PlanDaoImpl implements PlanDao {
 		return planList;
 	}
 
+	public Plan getPlanByID(String planID) throws Exception {
+		Connection con = getCon();
+		if (con == null)
+			return null;
+		String query = "select * from plan where planID=?";
+		PreparedStatement stmt = con.prepareStatement(query);
+		stmt.setString(1, planID);
+		ResultSet set = stmt.executeQuery();
+		while (set.next()) {
+			Plan plan = new Plan();
+			plan.setPlanID(set.getString("planID"));
+			plan.setFromUserID(set.getString("fromUserID"));
+			plan.setToUserID(set.getString("toUserID"));
+			plan.setStartTime(set.getString("startTime"));
+			plan.setEndTime(set.getString("endTime"));
+			plan.setState(set.getString("state"));
+			return plan;
+		}
+		return null;
+	}
+
 }

@@ -3,6 +3,8 @@ package com.nju.FitClubServer.service.impl;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import javax.ws.rs.core.Response;
+
 import com.nju.FitClubServer.dao.CoordinateRecordDao;
 import com.nju.FitClubServer.dao.RunRecordDao;
 import com.nju.FitClubServer.dao.impl.CoordinateRecordDaoImpl;
@@ -10,6 +12,7 @@ import com.nju.FitClubServer.dao.impl.RunRecordDaoImpl;
 import com.nju.FitClubServer.model.CoordinateRecord;
 import com.nju.FitClubServer.model.EatRecord;
 import com.nju.FitClubServer.model.RunRecord;
+import com.nju.FitClubServer.model.RunRecordList;
 import com.nju.FitClubServer.service.RunService;
 
 public class RunServiceImpl implements RunService {
@@ -17,7 +20,7 @@ public class RunServiceImpl implements RunService {
 	private RunRecordDao runRecordDao = new RunRecordDaoImpl();
 	private CoordinateRecordDao coordinateRecordDao = new CoordinateRecordDaoImpl();
 
-	public boolean addRunRecord(RunRecord runRecord) {
+	public Response addRunRecord(RunRecord runRecord) {
 
 		try {
 			String runRecordID = getNewID();
@@ -27,7 +30,7 @@ public class RunServiceImpl implements RunService {
 			}
 			runRecord.setRunRecordID(runRecordID);
 			if (!runRecordDao.addRunRecord(runRecord))
-				return false;
+				return Response.ok(false).build();
 			ArrayList<CoordinateRecord> recordList = runRecord
 					.getCoordinateRecordList();
 			for (int i = 0; i < recordList.size(); i++) {
@@ -40,20 +43,25 @@ public class RunServiceImpl implements RunService {
 				record.setRunRecordID(runRecordID);
 				record.setCoordinateRecordID(recordID);
 				if (!coordinateRecordDao.addCoordinateRecord(record))
-					return false;
+					return Response.ok(false).build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return true;
+		return Response.ok(true).build();
 	}
 
-	public ArrayList<RunRecord> getRunRecord(String userID, String time) {
+	public RunRecordList getRunRecord(String userID, String time) {
 		// TODO Auto-generated method stub
+
+		RunRecordList list = new RunRecordList();
+
+
 		ArrayList<RunRecord> runRecordList = new ArrayList<RunRecord>();
 		try {
 			runRecordList = runRecordDao.getRunRecordsByUserIDAndTime(userID,
 					time);
+
 
 			for (int i = 0; i < runRecordList.size(); i++) {
 				RunRecord record = runRecordList.get(i);
@@ -61,21 +69,28 @@ public class RunServiceImpl implements RunService {
 						.getCoordinateRecordByRunRecordID(record
 								.getRunRecordID()));
 			}
+			list.setRecords(runRecordList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return runRecordList;
+		return list;
 	}
 
 	private String getNewID() {
 		Calendar cal = Calendar.getInstance();
-		String year = cal.get(Calendar.YEAR) + "";
-		String month = cal.get(Calendar.MONTH) + "";
-		String day = cal.get(Calendar.DAY_OF_MONTH) + "";
-		String hour = cal.get(Calendar.HOUR_OF_DAY) + "";
-		String minutes = cal.get(Calendar.MINUTE) + "";
-		String sec = cal.get(Calendar.SECOND) + "";
-		return year + month + day + hour + minutes + sec;
+		String sYear = cal.get(Calendar.YEAR) + "";
+		String sMonth = getNewStr(cal.get(Calendar.MONTH) + 1);
+		String sDay = getNewStr(cal.get(Calendar.DAY_OF_MONTH));
+		String hour = getNewStr(cal.get(Calendar.HOUR_OF_DAY));
+		String minutes = getNewStr(cal.get(Calendar.MINUTE));
+		String sec = getNewStr(cal.get(Calendar.SECOND));
+		return sYear + sMonth + sDay + hour + minutes + sec;
+	}
+
+	public String getNewStr(int i) {
+		if (i < 10)
+			return "0" + i;
+		return "" + i;
 	}
 
 }
